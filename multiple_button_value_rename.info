@@ -1,0 +1,4 @@
+name = Multiple Button Value Rename
+description = Adds the form field label to the Add/Remove button for multiple value fields
+core = 7.x
+package = Other

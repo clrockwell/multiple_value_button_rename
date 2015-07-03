@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file(multiple_button_value_rename)
+ * @todo  add some more information about this file
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function multiple_button_value_rename_form_alter(&$form, &$form_state, $form_id) {
+    $form_fields = $form_state['field'];
+    foreach ($form_fields as $field_name => $field) {
+      if ($field_name === '#parents') {
+        foreach ($field as $k => $v) {
+          $these_fields = $v[LANGUAGE_NONE][0]['#fields'];
+          foreach ($these_fields as $i => $j) {
+            if (mbvr_does_field_have_unlimited($form[$k][LANGUAGE_NONE][0][$i])) {
+              $form[$k][LANGUAGE_NONE][0][$i][LANGUAGE_NONE]['add_more']['#value'] = t('Add another @title', array('@title' => $form[$k][LANGUAGE_NONE][0][$i][LANGUAGE_NONE]['#title']));
+            }
+          }
+          
+        }
+      } 
+      elseif (mbvr_does_field_have_unlimited($form[$field_name])) {
+        $form[$field_name][LANGUAGE_NONE]['add_more']['#value'] = t('Add another @title', array('@title' => $form[$field_name][LANGUAGE_NONE]['#title']));
+      }
+    }
+  
+}
+
+function mbvr_does_field_have_unlimited($field) {
+  return $field[LANGUAGE_NONE]['#cardinality'] === '-1';
+}
